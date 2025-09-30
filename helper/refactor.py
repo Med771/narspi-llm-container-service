@@ -5,7 +5,7 @@ class RefactorHelper:
     @staticmethod
     def get_query_embedding(obj: dict):
         res = {
-            "embedUUID": obj['embedUUID'],
+            "uuid": obj['uuid'],
             "embedding": []
         }
 
@@ -23,7 +23,7 @@ class RefactorHelper:
     @staticmethod
     def get_docs_embedding(obj: dict):
         res = {
-            "embedUUID": obj['embedUUID'],
+            "uuid": obj['uuid'],
             "embeddings": []
         }
 
