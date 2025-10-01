@@ -13,4 +13,4 @@ class EmbedConfig:
     MAX_INPUT_CHARS = 32_000
 
     device = torch.device("cpu")
-    model = AutoModel.from_pretrained(MODEL_ID, trust_remote_code=True).eval().to(device)
+    model = AutoModel.from_pretrained(MODEL_ID, revision="f1944de", trust_remote_code=True).eval().to(device)

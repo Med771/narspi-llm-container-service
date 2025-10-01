@@ -28,6 +28,8 @@ class BrokerConsumer:
             queue = await channel.declare_queue(BrokerConfig.EMBED_DOCS_QUEUE, durable=True)
 
             async with queue.iterator() as queue_iter:
+                print("Consuming docs queue")
+
                 async for message in queue_iter:
                     async with message.process():
                         obj = json.loads(message.body.decode())
@@ -64,6 +66,8 @@ class BrokerConsumer:
             queue = await channel.declare_queue(BrokerConfig.EMBED_QUERY_QUEUE, durable=True)
 
             async with queue.iterator() as queue_iter:
+                print("Consuming query queue")
+
                 async for message in queue_iter:
                     async with message.process():
                         obj = json.loads(message.body.decode())
