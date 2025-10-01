@@ -1,11 +1,16 @@
 import asyncio
+import aio_pika
 
 from asyncio import CancelledError
+
+from config import BrokerConfig
 
 from broke.consumer import BrokerConsumer
 
 async def main():
     print("START LLM MODEL")
+
+    BrokerConfig.CONNECTION = await aio_pika.connect_robust(BrokerConfig.RABBITMQ_URL)
 
     await BrokerConsumer.consume_running_query_queue()
     await BrokerConsumer.consume_running_docs_queue()
