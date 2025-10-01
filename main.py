@@ -1,3 +1,5 @@
+print("main.py started")
+
 import asyncio
 import aio_pika
 
@@ -23,8 +25,16 @@ async def main():
         task2 = asyncio.create_task(BrokerConsumer.consume_running_query_queue())
 
         await asyncio.gather(task1, task2)
-    except (KeyboardInterrupt, CancelledError):
+    except (KeyboardInterrupt, CancelledError) as e:
+        print("Task failed", e)
+
         return
+
+    try:
+        while True:
+            await asyncio.sleep(1)
+    except (KeyboardInterrupt, CancelledError):
+        pass
 
     print("END LLM MODEL")
 
