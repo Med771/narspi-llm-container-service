@@ -15,7 +15,10 @@ class BrokerConsumer:
     @staticmethod
     @BrokerDecorator.log_call(prefix=f"consume: {BrokerConfig.EMBED_DOCS_QUEUE}")
     async def consume_docs_queue():
-        connection = await aio_pika.connect_robust(BrokerConfig.RABBITMQ_URL)
+        connection = BrokerConfig.CONNECTION
+
+        if not connection:
+            exit("CONNECTION ERROR")
 
         async with connection:
             channel = await connection.channel()
@@ -48,7 +51,10 @@ class BrokerConsumer:
     @staticmethod
     @BrokerDecorator.log_call(prefix=f"consume: {BrokerConfig.EMBED_QUERY_QUEUE}")
     async def consume_query_queue():
-        connection = await aio_pika.connect_robust(BrokerConfig.RABBITMQ_URL)
+        connection = BrokerConfig.CONNECTION
+
+        if not connection:
+            exit("CONNECTION ERROR")
 
         async with connection:
             channel = await connection.channel()
