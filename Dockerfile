@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENV HF_HOME=/models
 ENV TRANSFORMERS_CACHE=/models
+ENV PYTHONUNBUFFERED=1
 
 RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('jinaai/jina-embeddings-v3', revision='f1944de', trust_remote_code=True)"
 
