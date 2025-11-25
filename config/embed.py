@@ -8,7 +8,7 @@ class EmbedConfig:
     torch.set_flush_denormal(True)
 
     MODEL_ID = "jinaai/jina-embeddings-v3"
-    MODEL_ID = "./jina-embeddings-v3"
+    #MODEL_ID = "./jina-embeddings-v3"
     DEFAULT_DIMS = 512
     BATCH_SIZE = 8
     ROUND_DECIMALS = 6
