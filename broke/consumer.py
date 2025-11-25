@@ -41,6 +41,10 @@ class BrokerConsumer:
 
                         res: dict = RefactorHelper.get_docs_embedding(obj=obj)
 
+                        if "errors" in res and res["errors"]:
+                            print(
+                                f"[!] Some chunks too long for UUID={obj['uuid']}: {len(res['errors'])} chunks exceeded max length")
+
                         if message.reply_to:
                             await channel.default_exchange.publish(
                                 aio_pika.Message(
@@ -78,6 +82,9 @@ class BrokerConsumer:
                         print(f"[>] Received from {BrokerConfig.EMBED_QUERY_QUEUE}: UUID={obj['uuid']}")
 
                         res: dict = RefactorHelper.get_query_embedding(obj=obj)
+
+                        if "error" in res and res["error"] and "too long" in res["error"].lower():
+                            print(f"[!] Query too long for UUID={obj['uuid']}: {res['error']}")
 
                         if message.reply_to:
                             await channel.default_exchange.publish(
