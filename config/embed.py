@@ -27,8 +27,9 @@ class EmbedConfig:
     session_options = ort.SessionOptions()
     session_options.intra_op_num_threads = 4
     session_options.inter_op_num_threads = 1
-    session_options.execution_mode = ort.ExecutionMode.ORT_PARALLEL
-    session_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+    session_options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+    session_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_EXTENDED
+    session_options.enable_mem_pattern = False
     session_options.add_session_config_entry("session.use_device_allocator_for_initializers", "1")
     session_options.add_session_config_entry("session.intra_op.allow_spinning", "1")
     session_options.add_session_config_entry("session.inter_op.allow_spinning", "1")
@@ -42,13 +43,22 @@ class EmbedConfig:
         "retrieval.query",
     ])
 
+    # настройка провайдера
+    providers = [
+        ('CPUExecutionProvider', {
+            'arena_extend_strategy': 1,
+            'mem_limit': 1024 * 1024 * 1024 * 4,
+        }),
+        'CPUExecutionProvider',
+    ]
+
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID,
                                               cache_dir="/models",
                                               trust_remote_code=True)
 
     session = ort.InferenceSession(
         ONNX_PATH,
-        providers=['CPUExecutionProvider'],
+        providers=providers,
         sess_options=session_options,
     )
 
